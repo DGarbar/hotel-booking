@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
 
-	List<Room> findAllByCategoryIs(RoomCategory category);
+	List<Room> getAllByCategory(RoomCategory category);
 
 //Original
 //Select * from room where room.id not in (SELECT DISTINCT room_id FROM booking Where '2018-04-23' BETWEEN start_date AND finish_date)

@@ -5,7 +5,9 @@ import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -32,10 +34,5 @@ public class User {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	private List<Booking> booking = new ArrayList<>();
-
-	@JsonIgnore
-	public List<Booking> getBooking() {
-		return booking;
-	}
+	private Set<Booking> bookings = new HashSet<>();
 }

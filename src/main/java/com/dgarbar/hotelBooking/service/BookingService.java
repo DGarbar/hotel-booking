@@ -3,12 +3,10 @@ package com.dgarbar.hotelBooking.service;
 import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.entity.Room;
 import com.dgarbar.hotelBooking.model.entity.RoomCategory;
-import com.dgarbar.hotelBooking.model.mappers.RoomMapper;
+import com.dgarbar.hotelBooking.model.mappers.InnerRoomMapper;
 import com.dgarbar.hotelBooking.repo.RoomRepository;
-import com.dgarbar.hotelBooking.repo.BookingRepository;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,22 +14,28 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class BookingService {
 
-	private BookingRepository bookingRepository;
 	private RoomRepository roomRepository;
-	private RoomMapper roomMapper;
+	private InnerRoomMapper innerRoomMapper;
 
-	public BookingService(BookingRepository bookingRepository,
-		RoomRepository roomRepository, RoomMapper roomMapper) {
-		this.bookingRepository = bookingRepository;
+	public BookingService(RoomRepository roomRepository, InnerRoomMapper innerRoomMapper) {
 		this.roomRepository = roomRepository;
-		this.roomMapper = roomMapper;
+		this.innerRoomMapper = innerRoomMapper;
 	}
 
-	public List<RoomDto> getRooms(RoomCategory category, Date date) {
-		List<Room> roomsByCategory = roomRepository.findAllByCategoryIs(category);
-		return roomsByCategory.stream()
-			.map(roomMapper::toDto)
-			.collect(Collectors.toList());
+	public List<RoomDto> getRooms(RoomCategory category) {
+		List<Room> roomsByCategory = roomRepository.getAllByCategory(category);
+		return innerRoomMapper.toDtoList(roomsByCategory);
 	}
+
+	public List<RoomDto> getRooms(Date date) {
+		List<Room> roomsByCategory = roomRepository.getRoomThatNotBooked(date);
+		return innerRoomMapper.toDtoList(roomsByCategory);
+	}
+
+	public List<RoomDto> getAllRooms() {
+		List<Room> allRooms = roomRepository.findAll();
+		return innerRoomMapper.toDtoList(allRooms);
+	}
+
 
 }

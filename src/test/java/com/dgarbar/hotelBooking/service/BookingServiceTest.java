@@ -18,7 +18,7 @@ public class BookingServiceTest {
 
 	@Test
 	public void getRooms() {
-		List<RoomDto> vip = bookingService.getRooms(RoomCategory.VIP, null);
+		List<RoomDto> vip = bookingService.getRooms(RoomCategory.VIP);
 		System.out.println(vip);
 	}
 }

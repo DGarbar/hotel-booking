@@ -42,8 +42,7 @@ public class BookingController {
 		@RequestParam("userId") String userId,
 		@RequestParam("from") @DateTimeFormat(pattern="yyyy-MM-dd") Date fromDate,
 		@RequestParam("to") @DateTimeFormat(pattern="yyyy-MM-dd") Date toDate){
-		System.out.println(fromDate);
-		System.out.println(toDate);
+
 	}
 
 }

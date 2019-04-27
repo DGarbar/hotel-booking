@@ -2,7 +2,9 @@ package com.dgarbar.hotelBooking.model.entity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import lombok.AccessLevel;
 import lombok.EqualsAndHashCode;
@@ -33,11 +35,11 @@ public class Room {
 
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	private List<Booking> bookings = new ArrayList<>();
+	private Set<Booking> bookings = new HashSet<>();
 
 
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	private List<RoomService> roomServices = new ArrayList<>();
+	private Set<RoomService> roomServices = new HashSet<>();
 
 }
