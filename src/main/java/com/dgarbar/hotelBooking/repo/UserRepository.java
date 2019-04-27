@@ -14,6 +14,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 		+ "LEFT JOIN FETCH u.bookings b "
 		+ "LEFT JOIN FETCH b.room r "
 		+ "LEFT JOIN FETCH r.roomServices s "
+		+ "LEFT JOIN FETCH s.service "
 		+ "WHERE u.id = :id")
 	Optional<User> getUserByIdEagerly(@Param("id") Long id);
 }

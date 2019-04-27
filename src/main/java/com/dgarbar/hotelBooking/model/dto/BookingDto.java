@@ -3,8 +3,10 @@ package com.dgarbar.hotelBooking.model.dto;
 import com.dgarbar.hotelBooking.model.entity.Room;
 import com.dgarbar.hotelBooking.model.entity.User;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Date;
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
@@ -14,8 +16,12 @@ public class BookingDto {
 
 	private Long id;
 
+	@NotNull
 	private RoomDto room;
-	private Date startDate;
-	private Date finishDate;
+	@NotNull
+	private LocalDate startDate;
+	@NotNull
+	private LocalDate finishDate;
+
 	private BigDecimal price;
 }

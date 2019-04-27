@@ -7,7 +7,8 @@ import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.dto.RoomServiceDto;
 import com.dgarbar.hotelBooking.model.dto.UserDto;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,21 +24,27 @@ public class PriceCalculator {
 	}
 
 	public BigDecimal recalculateBookingPrice(BookingDto bookingDto) {
-		Date startDate = bookingDto.getStartDate();
-		long duration = DAYS.between(startDate.toLocalDate(), startDate.toLocalDate()) + 1;
+		LocalDate startDate = bookingDto.getStartDate();
+		LocalDate finishDate = bookingDto.getFinishDate();
+
+		long duration = DAYS.between(startDate, finishDate) + 1;
 		RoomDto room = bookingDto.getRoom();
-		BigDecimal bookingPrice = recalculateRoomPrice(room).multiply(BigDecimal.valueOf(duration));
+		BigDecimal bookingPrice = fullRoomPrice(room).multiply(BigDecimal.valueOf(duration));
 		bookingDto.setPrice(bookingPrice);
 		return bookingPrice;
 	}
 
-	public BigDecimal recalculateRoomPrice(RoomDto roomDto) {
+	public BigDecimal fullRoomPrice(RoomDto roomDto) {
 		BigDecimal price = roomDto.getPrice();
-		BigDecimal roomPrice = roomDto.getRoomService()
+		List<RoomServiceDto> roomService = roomDto.getRoomService();
+		BigDecimal roomServicePrice = getRoomServicePrice(roomService);
+		return price.add(roomServicePrice);
+	}
+
+	public BigDecimal getRoomServicePrice(List<RoomServiceDto> roomServiceDtos) {
+		return roomServiceDtos
 			.stream()
 			.map(RoomServiceDto::getPrice)
-			.reduce(price, BigDecimal::add);
-		roomDto.setPrice(roomPrice);
-		return roomPrice;
+			.reduce(BigDecimal.ZERO, BigDecimal::add);
 	}
 }

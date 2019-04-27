@@ -6,6 +6,7 @@ import static org.junit.Assert.assertNotNull;
 import com.dgarbar.hotelBooking.model.entity.Booking;
 import com.dgarbar.hotelBooking.model.entity.Room;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.util.List;
 import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -31,14 +32,14 @@ public class RoomRepositoryTest {
 
 	@Test
 	public void getRoomsThatNotInBookedListSize() {
-		Date date = Date.valueOf("2018-04-23");
+		LocalDate date = LocalDate.of(2018, 4, 23);
 		List<Room> roomThatNotBooked = roomRepository.getRoomThatNotBooked(date);
 		assertEquals(6,roomThatNotBooked.size());
 	}
 
 	@Test
 	public void getAllRoomsWhenInDateAllRoomsFree() {
-		Date date = Date.valueOf("2017-04-23");
+		LocalDate date = LocalDate.of(2018, 4, 23);
 		List<Room> roomThatNotBooked = roomRepository.getRoomThatNotBooked(date);
 		assertEquals(10,roomThatNotBooked.size());
 	}

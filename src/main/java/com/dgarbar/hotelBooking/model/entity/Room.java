@@ -1,9 +1,7 @@
 package com.dgarbar.hotelBooking.model.entity;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -42,4 +40,14 @@ public class Room {
 	@Setter(AccessLevel.PRIVATE)
 	private Set<RoomService> roomServices = new HashSet<>();
 
+	public void addBooking(Booking booking) {
+		bookings.add(booking);
+		booking.setRoom(this);
+	}
+
+	//TODO test
+	public void removeBooking(Booking booking) {
+		bookings.remove(booking);
+		booking.setRoom(null);
+	}
 }

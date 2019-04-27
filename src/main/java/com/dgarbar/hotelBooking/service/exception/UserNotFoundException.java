@@ -1,6 +1,6 @@
 package com.dgarbar.hotelBooking.service.exception;
 
-public class UserNotFoundException extends Exception {
+public class UserNotFoundException extends EntityNotFoundException {
 
 	public UserNotFoundException() {
 	}

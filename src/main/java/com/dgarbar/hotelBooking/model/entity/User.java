@@ -1,12 +1,7 @@
 package com.dgarbar.hotelBooking.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import javax.persistence.*;
 import lombok.AccessLevel;
@@ -35,4 +30,16 @@ public class User {
 	@OneToMany(mappedBy = "user", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
 	private Set<Booking> bookings = new HashSet<>();
+
+	public void addBooking(Booking booking) {
+		bookings.add(booking);
+		booking.setUser(this);
+	}
+
+	//TODO test
+	public void removeBooking(Booking booking) {
+		bookings.remove(booking);
+		booking.setUser(null);
+
+	}
 }

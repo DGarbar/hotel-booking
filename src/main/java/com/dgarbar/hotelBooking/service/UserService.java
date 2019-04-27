@@ -21,10 +21,12 @@ public class UserService {
 
 	public UserService(UserRepository userRepository,
 		SimpleUserMapper simpleUserMapper,
-		InnerUserMapper innerUserMapper) {
+		InnerUserMapper innerUserMapper,
+		PriceCalculator priceCalculator) {
 		this.userRepository = userRepository;
 		this.simpleUserMapper = simpleUserMapper;
 		this.innerUserMapper = innerUserMapper;
+		this.priceCalculator = priceCalculator;
 	}
 
 	public UserDto save(UserDto userDto) {
@@ -42,9 +44,8 @@ public class UserService {
 		return userDto;
 	}
 
-	public List<UserDto> getAllUser(){
+	public List<UserDto> getAllUser() {
 		return simpleUserMapper.toDtoList(userRepository.findAll());
 	}
-
 
 }

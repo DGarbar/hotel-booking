@@ -1,7 +1,8 @@
 package com.dgarbar.hotelBooking.model.entity;
 
+import java.time.LocalDate;
 import java.util.Calendar;
-import java.sql.Date;
+import java.util.Date;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,11 +28,10 @@ public class Booking {
 	private Room room;
 
 	@Column(nullable = false)
-//	@Temporal(TemporalType.DATE)
-	private Date startDate;
+	private LocalDate startDate;
 
 	@Column(nullable = false)
-//	@Temporal(TemporalType.DATE)
-	private Date finishDate;
+	private LocalDate finishDate;
+
 
 }
