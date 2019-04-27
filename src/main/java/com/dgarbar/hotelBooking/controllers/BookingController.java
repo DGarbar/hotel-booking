@@ -4,6 +4,7 @@ import com.dgarbar.hotelBooking.model.dto.BookingDto;
 import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.entity.Booking;
 import com.dgarbar.hotelBooking.model.entity.Room;
+import com.dgarbar.hotelBooking.model.entity.RoomCategory;
 import java.util.Date;
 import java.util.List;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -23,8 +24,9 @@ public class BookingController {
 	//Or use Specification<Room>
 	@GetMapping
 	public List<RoomDto> getRooms(
-		@RequestParam("category") String category,
-		@RequestParam("date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
+		@RequestParam(value = "category",required = false) RoomCategory category,
+		@RequestParam(value = "date", required = false) @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
+		System.out.println(category);
 		return null;
 	}
 

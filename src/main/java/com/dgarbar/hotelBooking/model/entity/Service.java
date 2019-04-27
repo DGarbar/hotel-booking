@@ -27,7 +27,6 @@ public class Service {
 
 	private BigDecimal price;
 
-
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
 	private List<RoomService> roomServices = new ArrayList<>();

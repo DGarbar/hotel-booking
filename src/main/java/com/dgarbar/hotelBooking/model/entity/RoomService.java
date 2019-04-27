@@ -17,11 +17,11 @@ public class RoomService {
 	@EmbeddedId
 	private RoomServiceId roomServiceId;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@MapsId("roomId")
 	private Room room;
 
-	@ManyToOne(optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@MapsId("serviceId")
 	private Service service;
 }

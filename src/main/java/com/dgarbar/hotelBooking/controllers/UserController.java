@@ -1,8 +1,7 @@
 package com.dgarbar.hotelBooking.controllers;
 
 import com.dgarbar.hotelBooking.model.dto.UserDto;
-import com.dgarbar.hotelBooking.model.entity.User;
-import com.dgarbar.hotelBooking.repo.UserRepository;
+import com.dgarbar.hotelBooking.repo.BookingRepository;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
-	private UserRepository userRepository;
+	private BookingRepository userRepository;
 
-	public UserController(UserRepository userRepository) {
+	public UserController(BookingRepository userRepository) {
 		this.userRepository = userRepository;
 	}
 

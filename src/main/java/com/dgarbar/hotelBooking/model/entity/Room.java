@@ -27,13 +27,13 @@ public class Room {
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 15, columnDefinition = "varchar(15) default 'ORDINARY'")
-	private RoomCategory category;
+	private RoomCategory category = RoomCategory.ORDINARY;
 
 	private BigDecimal price;
 
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	private List<Booking> booking = new ArrayList<>();
+	private List<Booking> bookings = new ArrayList<>();
 
 
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
