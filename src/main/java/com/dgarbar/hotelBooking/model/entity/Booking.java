@@ -16,22 +16,22 @@ public class Booking {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	public Long id;
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "booking_user_fk", nullable = false)
-	public User user;
+	private User user;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "booking_room_fk", nullable = false)
-	public Room room;
+	private Room room;
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	public Date startDate;
+	private Date startDate;
 
 	@Column(nullable = false)
 	@Temporal(TemporalType.DATE)
-	public Date finishDate;
+	private Date finishDate;
 
 }

@@ -1,5 +1,9 @@
 package com.dgarbar.hotelBooking.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.*;
@@ -15,17 +19,23 @@ import org.hibernate.annotations.NaturalId;
 @Setter
 @Getter
 @Entity
+//@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class User {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	public Long id;
+	private Long id;
 
 	@NaturalId
-	public String login;
+	private String login;
 
+	@JsonIgnore
 	@OneToMany(mappedBy = "user", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	public List<Booking> booking = new ArrayList<>();
+	private List<Booking> booking = new ArrayList<>();
 
+	@JsonIgnore
+	public List<Booking> getBooking() {
+		return booking;
+	}
 }

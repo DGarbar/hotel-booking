@@ -1,5 +1,7 @@
 package com.dgarbar.hotelBooking.controllers;
 
+import com.dgarbar.hotelBooking.model.dto.BookingDto;
+import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.entity.Booking;
 import com.dgarbar.hotelBooking.model.entity.Room;
 import java.util.Date;
@@ -20,14 +22,14 @@ public class BookingController {
 	//Get all rooms with possible dates to book
 	//Or use Specification<Room>
 	@GetMapping
-	public List<Room> getRooms(
+	public List<RoomDto> getRooms(
 		@RequestParam("category") String category,
 		@RequestParam("date") @DateTimeFormat(pattern="yyyy-MM-dd") Date date){
 		return null;
 	}
 
 	@GetMapping("/bookings")
-	public List<Booking> getAllBooking(){
+	public List<BookingDto> getAllBooking(){
 		return null;
 	}
 

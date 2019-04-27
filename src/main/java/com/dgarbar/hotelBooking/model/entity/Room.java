@@ -20,24 +20,24 @@ public class Room {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	public Long id;
+	private Long id;
 
 	@NaturalId
-	public Long number;
+	private Long number;
 
 	@Enumerated(EnumType.STRING)
 	@Column(length = 15, columnDefinition = "varchar(15) default 'ORDINARY'")
-	public RoomCategory category;
+	private RoomCategory category;
 
-	public BigDecimal price;
-
-	@OneToMany(mappedBy = "room", orphanRemoval = true)
-	@Setter(AccessLevel.PRIVATE)
-	public List<Booking> booking = new ArrayList<>();
-
+	private BigDecimal price;
 
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	public List<RoomService> roomServices = new ArrayList<>();
+	private List<Booking> booking = new ArrayList<>();
+
+
+	@OneToMany(mappedBy = "room", orphanRemoval = true)
+	@Setter(AccessLevel.PRIVATE)
+	private List<RoomService> roomServices = new ArrayList<>();
 
 }

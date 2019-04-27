@@ -1,6 +1,8 @@
 package com.dgarbar.hotelBooking.controllers;
 
+import com.dgarbar.hotelBooking.model.dto.UserDto;
 import com.dgarbar.hotelBooking.model.entity.User;
+import com.dgarbar.hotelBooking.repo.UserRepository;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -12,19 +14,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/users")
 public class UserController {
 
+	private UserRepository userRepository;
+
+	public UserController(UserRepository userRepository) {
+		this.userRepository = userRepository;
+	}
+
 	@GetMapping
-	public List<User> getAllUsers(){
+	public List<UserDto> getAllUsers(){
 		return null;
 	}
 
 	//UserDto have prices for all bookings
-	@GetMapping("/{id}")
-	public User getUserById(@PathVariable Long id){
+	@GetMapping(path = "/{id}", produces = "application/json")
+	public UserDto getUserById(@PathVariable Long id){
 		return null;
 	}
 
 	@PostMapping
-	public void saveUser(User user){
+	public void saveUser(UserDto user){
 
 	}
 }

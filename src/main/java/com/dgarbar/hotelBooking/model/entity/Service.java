@@ -23,13 +23,13 @@ public class Service {
 	private Long id;
 
 	@NaturalId
-	public String name;
+	private String name;
 
-	public BigDecimal price;
+	private BigDecimal price;
 
 
 	@OneToMany(mappedBy = "room", orphanRemoval = true)
 	@Setter(AccessLevel.PRIVATE)
-	public List<RoomService> roomServices = new ArrayList<>();
+	private List<RoomService> roomServices = new ArrayList<>();
 
 }
