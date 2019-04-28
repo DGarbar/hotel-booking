@@ -34,7 +34,7 @@ public class UserService {
 		User savedUser = userRepository.save(user);
 		return simpleUserMapper.toDto(savedUser);
 	}
-
+	@Transactional(readOnly = true)
 	public UserDto getUserInfo(Long id) throws UserNotFoundException {
 		User user = userRepository.getUserByIdEagerly(id)
 			.orElseThrow(
@@ -43,7 +43,7 @@ public class UserService {
 		priceCalculator.recalculateUserPrice(userDto);
 		return userDto;
 	}
-
+	@Transactional(readOnly = true)
 	public List<UserDto> getAllUser() {
 		return simpleUserMapper.toDtoList(userRepository.findAll());
 	}

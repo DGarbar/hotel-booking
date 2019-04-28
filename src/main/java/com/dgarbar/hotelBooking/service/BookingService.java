@@ -39,22 +39,22 @@ public class BookingService {
 		this.innerRoomMapper = innerRoomMapper;
 		this.bookingMapper = bookingMapper;
 	}
-
+	@Transactional(readOnly = true)
 	public List<RoomDto> getRooms(RoomCategory category) {
 		List<Room> roomsByCategory = roomRepository.getAllByCategory(category);
 		return innerRoomMapper.toDtoList(roomsByCategory);
 	}
-
+	@Transactional(readOnly = true)
 	public List<RoomDto> getRooms(LocalDate date) {
 		List<Room> roomsByCategory = roomRepository.getRoomThatNotBooked(date);
 		return innerRoomMapper.toDtoList(roomsByCategory);
 	}
-
+	@Transactional(readOnly = true)
 	public List<RoomDto> getAllRooms() {
 		List<Room> allRooms = roomRepository.findAll();
 		return innerRoomMapper.toDtoList(allRooms);
 	}
-
+	@Transactional(readOnly = true)
 	public List<BookingDto> getAllBooking() {
 		return bookingMapper.toDtoList(bookingRepository.getAllBookingEagerly());
 	}

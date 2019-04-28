@@ -16,7 +16,9 @@ import lombok.Setter;
 public class Booking {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	//Prefer SEQUENCE but we dont save to much information
+	//If you need SEQUENCE, set sequence name explicitly
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
