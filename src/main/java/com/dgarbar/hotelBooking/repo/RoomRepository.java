@@ -2,7 +2,6 @@ package com.dgarbar.hotelBooking.repo;
 
 import com.dgarbar.hotelBooking.model.entity.Room;
 import com.dgarbar.hotelBooking.model.entity.RoomCategory;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,8 +17,19 @@ public interface RoomRepository extends JpaRepository<Room, Long> {
 
 //Original
 //Select * from room where room.id not in (SELECT DISTINCT room_id FROM booking Where '2018-04-23' BETWEEN start_date AND finish_date)
-	@Query("SELECT r FROM Room r WHERE r.id NOT IN ("
+	@Query("SELECT r FROM Room r "
+		+ "LEFT JOIN FETCH r.roomServices s "
+		+ "LEFT JOIN FETCH s.service "
+		+ "WHERE r.id NOT IN ("
 		+ "SELECT b.room.id FROM Booking b WHERE :date BETWEEN b.startDate AND b.finishDate)")
-	List<Room> getRoomThatNotBooked(@Param("date") LocalDate date);
+	List<Room> getRoomEagerlyThatNotBooked(@Param("date") LocalDate date);
+
+	@Query("SELECT r FROM Room r "
+		+ "LEFT JOIN FETCH r.roomServices s "
+		+ "LEFT JOIN FETCH s.service "
+		+ "WHERE r.id NOT IN ("
+		+ "SELECT b.room.id FROM Booking b WHERE b.finishDate >= :start AND b.startDate <= :finish)")
+	List<Room> getRoomEagerlyThatNotBooked(@Param("start") LocalDate start,
+		@Param("finish") LocalDate finish);
 }
 

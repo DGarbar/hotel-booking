@@ -1,13 +1,10 @@
 package com.dgarbar.hotelBooking.service;
 
 import com.dgarbar.hotelBooking.model.dto.BookingDto;
-import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.entity.Booking;
 import com.dgarbar.hotelBooking.model.entity.Room;
-import com.dgarbar.hotelBooking.model.entity.RoomCategory;
 import com.dgarbar.hotelBooking.model.entity.User;
 import com.dgarbar.hotelBooking.model.mappers.InnerBookingMapper;
-import com.dgarbar.hotelBooking.model.mappers.InnerRoomMapper;
 import com.dgarbar.hotelBooking.repo.BookingRepository;
 import com.dgarbar.hotelBooking.repo.RoomRepository;
 import com.dgarbar.hotelBooking.repo.UserRepository;
@@ -24,43 +21,27 @@ import org.springframework.transaction.annotation.Transactional;
 public class BookingService {
 
 	private BookingRepository bookingRepository;
-	private RoomRepository roomRepository;
 	private UserRepository userRepository;
-	private InnerRoomMapper innerRoomMapper;
+	private RoomRepository roomRepository;
 	private InnerBookingMapper bookingMapper;
 
 	public BookingService(BookingRepository bookingRepository,
-		RoomRepository roomRepository, UserRepository userRepository,
-		InnerRoomMapper innerRoomMapper,
+		UserRepository userRepository,
+		RoomRepository roomRepository,
 		InnerBookingMapper bookingMapper) {
 		this.bookingRepository = bookingRepository;
-		this.roomRepository = roomRepository;
 		this.userRepository = userRepository;
-		this.innerRoomMapper = innerRoomMapper;
+		this.roomRepository = roomRepository;
 		this.bookingMapper = bookingMapper;
 	}
-	@Transactional(readOnly = true)
-	public List<RoomDto> getRooms(RoomCategory category) {
-		List<Room> roomsByCategory = roomRepository.getAllByCategory(category);
-		return innerRoomMapper.toDtoList(roomsByCategory);
-	}
-	@Transactional(readOnly = true)
-	public List<RoomDto> getRooms(LocalDate date) {
-		List<Room> roomsByCategory = roomRepository.getRoomThatNotBooked(date);
-		return innerRoomMapper.toDtoList(roomsByCategory);
-	}
-	@Transactional(readOnly = true)
-	public List<RoomDto> getAllRooms() {
-		List<Room> allRooms = roomRepository.findAll();
-		return innerRoomMapper.toDtoList(allRooms);
-	}
+
 	@Transactional(readOnly = true)
 	public List<BookingDto> getAllBooking() {
 		return bookingMapper.toDtoList(bookingRepository.getAllBookingEagerly());
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
-	public void saveBooking(Long userId, Long roomId, LocalDate fromDate, LocalDate toDate)
+	public BookingDto saveBooking(Long userId, Long roomId, LocalDate fromDate, LocalDate toDate)
 		throws EntityNotFoundException, DateIsOverlapException {
 		User user = userRepository.getOne(userId);
 		Room room = roomRepository.getOne(roomId);
@@ -73,12 +54,13 @@ public class BookingService {
 		booking.setFinishDate(toDate);
 		user.addBooking(booking);
 		room.addBooking(booking);
-		bookingRepository.save(booking);
+		Booking savedBooking = bookingRepository.save(booking);
+		return bookingMapper.toDto(savedBooking);
 	}
 
 	private boolean isOverlapForDates(LocalDate fromDate, LocalDate toDate, Room room) {
 		return !bookingRepository
-			.getBookingsByFinishDateGreaterThanEqualAndStartDateLessThanEqualAndRoom(fromDate,
+			.getBookingsThatOverlapWithDatesByRoom(fromDate,
 				toDate, room).isEmpty();
 	}
 

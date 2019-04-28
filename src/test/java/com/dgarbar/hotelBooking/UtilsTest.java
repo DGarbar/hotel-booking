@@ -34,6 +34,4 @@ public class UtilsTest {
 		Date to = Date.valueOf("2018-01-23");
 		assertTrue(to.after(from));
 	}
-
-
 }

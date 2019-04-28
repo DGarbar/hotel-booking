@@ -20,7 +20,6 @@ public class SimpleUserMapper implements DtoMapper<UserDto, User> {
 
 	public User toEntity(UserDto userDto) {
 		User user = new User();
-		user.setId(userDto.getId());
 		user.setLogin(userDto.getLogin());
 		return user;
 	}

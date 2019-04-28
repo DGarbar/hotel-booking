@@ -34,15 +34,26 @@ public class UserService {
 		User savedUser = userRepository.save(user);
 		return simpleUserMapper.toDto(savedUser);
 	}
+
 	@Transactional(readOnly = true)
 	public UserDto getUserInfo(Long id) throws UserNotFoundException {
-		User user = userRepository.getUserByIdEagerly(id)
+		return userRepository.getUserByIdEagerly(id)
+			.map(user -> {
+				UserDto userDto = innerUserMapper.toDto(user);
+				priceCalculator.recalculateUserPrice(userDto);
+				return userDto;
+			}).orElseThrow(
+				() -> new UserNotFoundException(String.format("user with, %d is not exist", id)));
+	}
+
+	@Transactional(readOnly = true)
+	public UserDto getUserById(Long id) throws UserNotFoundException {
+		return userRepository.findById(id)
+			.map(simpleUserMapper::toDto)
 			.orElseThrow(
 				() -> new UserNotFoundException(String.format("user with, %d is not exist", id)));
-		UserDto userDto = innerUserMapper.toDto(user);
-		priceCalculator.recalculateUserPrice(userDto);
-		return userDto;
 	}
+
 	@Transactional(readOnly = true)
 	public List<UserDto> getAllUser() {
 		return simpleUserMapper.toDtoList(userRepository.findAll());

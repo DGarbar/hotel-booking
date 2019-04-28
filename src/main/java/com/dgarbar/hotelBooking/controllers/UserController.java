@@ -4,17 +4,20 @@ import com.dgarbar.hotelBooking.model.dto.UserDto;
 import com.dgarbar.hotelBooking.service.UserService;
 import com.dgarbar.hotelBooking.service.exception.UserNotFoundException;
 import java.util.List;
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/users")
 public class UserController {
+
 	private UserService userService;
 
 	public UserController(UserService userService) {
@@ -26,20 +29,33 @@ public class UserController {
 		return userService.getAllUser();
 	}
 
-	//UserDto have prices for all bookings
-	@GetMapping(path = "/{id}", produces = "application/json")
-	public UserDto getUserById(@PathVariable Long id) {
+	@GetMapping(path = "/{id}")
+	public ResponseEntity<UserDto> getUserById(@PathVariable Long id) {
 		try {
-			return userService.getUserInfo(id);
+			UserDto userInfo = userService.getUserById(id);
+			return new ResponseEntity<>(userInfo, HttpStatus.FOUND);
 		} catch (UserNotFoundException e) {
-			e.printStackTrace();
-			return null;
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		}
+	}
+
+	@GetMapping(path = "/{id}/booking")
+	public ResponseEntity<UserDto> getUserWithBookingById(@PathVariable Long id) {
+		try {
+			UserDto userInfo = userService.getUserInfo(id);
+			return new ResponseEntity<>(userInfo, HttpStatus.FOUND);
+		} catch (UserNotFoundException e) {
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 	}
 
 	@PostMapping
-	@ResponseStatus(HttpStatus.CREATED)
-	public void saveUser(UserDto user) {
-		userService.save(user);
+	public ResponseEntity<UserDto> saveUser(@Valid @RequestBody UserDto user) {
+		try {
+			UserDto userDto = userService.save(user);
+			return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
+		}
 	}
 }

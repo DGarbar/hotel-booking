@@ -15,6 +15,7 @@ public class InnerRoomMapper implements DtoMapper<RoomDto, Room> {
 
 	public RoomDto toDto(Room room) {
 		return RoomDto.builder()
+			.id(room.getId())
 			.category(room.getCategory())
 			.number(room.getNumber())
 			.price(room.getPrice())

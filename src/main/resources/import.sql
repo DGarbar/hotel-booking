@@ -10,13 +10,13 @@ INSERT INTO service (id,name,price) VALUES (2,'smiling','50');
 INSERT INTO service (id,name,price) VALUES (3,'cleaning','10');
 
 INSERT INTO room (id,number,category,price) VALUES (1,1,'VIP','199');
-INSERT INTO room (id,number,category,price) VALUES (2,3,'ORDINARY','597');
+INSERT INTO room (id,number,category,price) VALUES (2,3,'ORDINARY','597.4');
 INSERT INTO room (id,number,category,price) VALUES (3,5,'VIP','639');
-INSERT INTO room (id,number,category,price) VALUES (4,7,'VIP','821');
+INSERT INTO room (id,number,category,price) VALUES (4,7,'VIP','821.3');
 INSERT INTO room (id,number,category,price) VALUES (5,9,'VIP','123');
-INSERT INTO room (id,number,category,price) VALUES (6,11,'ORDINARY','840');
+INSERT INTO room (id,number,category,price) VALUES (6,11,'ORDINARY','840.1');
 INSERT INTO room (id,number,category,price) VALUES (7,13,'VIP','583');
-INSERT INTO room (id,number,category,price) VALUES (8,15,'ORDINARY','864');
+INSERT INTO room (id,number,category,price) VALUES (8,15,'ORDINARY','864.5');
 INSERT INTO room (id,number,category,price) VALUES (9,17,'VIP','787');
 INSERT INTO room (id,number,category,price) VALUES (10,19,'VIP','237');
 
