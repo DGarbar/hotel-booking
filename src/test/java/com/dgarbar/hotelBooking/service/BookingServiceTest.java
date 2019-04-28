@@ -1,7 +1,11 @@
 package com.dgarbar.hotelBooking.service;
 
+import com.dgarbar.hotelBooking.model.dto.BookingOrder;
 import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.entity.RoomCategory;
+import com.dgarbar.hotelBooking.service.exception.DateIsOverlapException;
+import com.dgarbar.hotelBooking.service.exception.EntityNotFoundException;
+import java.time.LocalDate;
 import java.util.List;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +21,13 @@ public class BookingServiceTest {
 	private BookingService bookingService;
 
 	@Test
-	public void getRooms() {
+	public void getRooms() throws EntityNotFoundException, DateIsOverlapException {
+
+		BookingOrder bookingOrder = new BookingOrder();
+		bookingOrder.setRoomId(2L);
+		bookingOrder.setUserId(1L);
+		bookingOrder.setFromDate(LocalDate.of(2018,4,23));
+		bookingOrder.setToDate(LocalDate.of(2018,4,24));
+		bookingService.saveBooking(bookingOrder);
 	}
 }

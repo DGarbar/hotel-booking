@@ -1,9 +1,6 @@
 package com.dgarbar.hotelBooking;
 
-import static org.hamcrest.Matchers.empty;
-import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -29,142 +26,106 @@ public class BookingLogic {
 	private MockMvc mockMvc;
 
 	@Test
-	public void getAllUsersIsWithoutInner() throws Exception {
-		mockMvc.perform(get("/users"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].bookingDtos").value(everyItem(empty())))
-			.andExpect(jsonPath("$.[*].totalPrice").value(everyItem(nullValue())));
+	public void getAllBooking() throws Exception {
+		mockMvc.perform(get("/hotel/bookings"))
+			.andExpect(status().isOk()).andDo(print())
+			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6, 7, 8, 9)))
+			.andExpect(jsonPath("$.length()").value(10));
 	}
 
 	@Test
-	public void getAllUsers() throws Exception {
-		mockMvc.perform(get("/users"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6)));
-	}
-
-	@Test
-	public void getById() throws Exception {
-		mockMvc.perform(get("/users/1"))
-			.andExpect(status().isFound())
-			.andExpect(jsonPath("$.id").value(1))
-			.andExpect(jsonPath("$.login").value("Cade"))
-			.andExpect(jsonPath("$.bookingDtos").isEmpty())
-			.andExpect(jsonPath("$.totalPrice").isEmpty());
-	}
-
-	@Test
-	public void getByIdWithBookingNotEmpty() throws Exception {
-		mockMvc.perform(get("/users/1/booking"))
-			.andExpect(status().isFound())
-			.andExpect(jsonPath("$.id").value(1))
-			.andExpect(jsonPath("$.login").value("Cade"))
-			.andExpect(jsonPath("$.bookingDtos").isNotEmpty())
-			.andExpect(jsonPath("$.totalPrice").value(3285.20));
-	}
-
-	@Test
-	public void getByIdWithBookingContainsAllUserBooking() throws Exception {
-		mockMvc.perform(get("/users/5/booking"))
-			.andExpect(status().isFound())
-			.andExpect(jsonPath("$.id").value(5))
-			.andExpect(jsonPath("$.login").value("Uriel"))
-			.andExpect(
-				jsonPath("$.bookingDtos.[*].room.id").value(hasItems(3, 10)))
-			.andExpect(jsonPath("$.totalPrice").value(4896.00));
-	}
-
-	@Test
-	public void getByIdWithBookingWithNotExistingIdNotFound() throws Exception {
-		mockMvc.perform(get("/users/50/booking"))
-			.andExpect(status().isNotFound());
-	}
-
-	@Test
-	public void getByIdWithNotExistingIdNotFound() throws Exception {
-		this.mockMvc.perform(get("/users/50"))
-			.andExpect(status().isNotFound());
-	}
-
-	@Test
-	public void addUserWithLogin() throws Exception {
+	public void addBookingWithNotValidDateBadRequest() throws Exception {
 		mockMvc.perform(
-			post("/users")
+			post("/hotel/bookings")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"login\":\"Johnathan\"}"))
-			.andExpect(jsonPath("$.id").value(7L))
-			.andExpect(jsonPath("$.login").value("Johnathan"))
-			.andExpect(jsonPath("$.bookingDtos").isEmpty())
-			.andExpect(jsonPath("$.totalPrice").isEmpty());
-	}
-
-	@Test
-	public void addUserWithNotValidSizeLoginBadRequest() throws Exception {
-		mockMvc.perform(
-			post("/users")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"login\":\"Jo\"}"))
+				.content(
+					"{\"userId\":\"1\",\"roomId\":\"3\",\"fromDate\":\"2018-01-01\",\"toDate\":\"2017-01-01\"}"))
+			.andDo(print())
 			.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void addUserWithNotValidEmptyLoginBadRequest() throws Exception {
+	public void addBookingWithoutIdNotValidBadRequest() throws Exception {
 		mockMvc.perform(
-			post("/users")
+			post("/hotel/bookings")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"login\":\"\"}"))
+				.content(
+					"{\"userId\":\"\",\"roomId\":\"3\",\"fromDate\":\"2018-01-01\",\"toDate\":\"2018-01-02\"}"))
+			.andDo(print())
 			.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void addUserWithoutBodyBadRequest() throws Exception {
+	public void addBookingWhenDateIsOverlapConflict() throws Exception {
 		mockMvc.perform(
-			post("/users")
+			post("/hotel/bookings")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{}"))
-			.andExpect(status().isBadRequest());
-	}
-
-	@Test
-	public void addUserWithNotUniqueLoginConflict() throws Exception {
-		mockMvc.perform(
-			post("/users")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"login\":\"Zeus\"}")).andDo(print())
+				.content(
+					"{\"userId\":\"1\",\"roomId\":\"4\",\"fromDate\":\"2018-04-23\",\"toDate\":\"2018-04-24\"}"))
+			.andDo(print())
 			.andExpect(status().isConflict());
 	}
 
 	@Test
-	public void addUserWithNotUniqueIdBadRequest() throws Exception {
+	public void addBookingWhenDateIsOverlapOnOneDayConflict() throws Exception {
 		mockMvc.perform(
-			post("/users")
+			post("/hotel/bookings")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"{\"userId\":\"1\",\"roomId\":\"4\",\"fromDate\":\"2018-04-23\",\"toDate\":\"2018-04-23\"}"))
+			.andDo(print())
+			.andExpect(status().isConflict());
+	}
+
+	@Test
+	public void addBookingWitNormalDate() throws Exception {
+		mockMvc.perform(
+			post("/hotel/bookings")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(
+					"{\"userId\":\"1\",\"roomId\":\"5\",\"fromDate\":\"2018-04-20\",\"toDate\":\"2018-04-21\"}"))
+			.andDo(print())
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.room").isNotEmpty());
+	}
+
+
+	@Test
+	public void addBookingWithNotUniqueLoginBadRequest() throws Exception {
+		mockMvc.perform(
+			post("/hotel/bookings")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("{\"login\":\"Zeus\"}")).andDo(print())
+			.andExpect(status().isBadRequest());
+	}
+
+	@Test
+	public void addBookingWithNotUniqueIdBadRequest() throws Exception {
+		mockMvc.perform(
+			post("/hotel/bookings")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"id\":\"1\",\"login\":\"Loura\"}")).andDo(print())
 			.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void addUserWithUniqueId() throws Exception {
+	public void addBookingWithUniqueIdBadRequest() throws Exception {
 		mockMvc.perform(
-			post("/users")
+			post("/hotel/bookings")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content("{\"id\":\"100\",\"login\":\"Sergi\"}")).andDo(print())
 			.andExpect(status().isBadRequest());
 	}
 
 	@Test
-	public void addUserAndHaveInGetAllUsersList() throws Exception {
-		mockMvc.perform(get("/users"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6)));
-
+	public void addBookingAndHaveInGetAllBookingsList() throws Exception {
 		mockMvc.perform(
-			post("/users")
+			post("/hotel/bookings")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"login\":\"Johnathan\"}"));
-
-		mockMvc.perform(get("/users"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6, 7)));
+				.content("{\"userId\":\"1\",\"roomId\":\"2\",\"fromDate\":\"2018-04-20\",\"toDate\":\"2018-04-21\"}"))
+			.andDo(print())
+			.andExpect(status().isCreated());
 	}
+
+
 }

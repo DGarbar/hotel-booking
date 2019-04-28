@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public interface BookingRepository extends JpaRepository<Booking, Long> {
 
-	@Query("SELECT b FROM Booking b "
+	@Query("SELECT DISTINCT b FROM Booking b "
 		+ "LEFT JOIN FETCH b.room r "
 		+ "LEFT JOIN FETCH r.roomServices s "
 		+ "LEFT JOIN FETCH s.service ")

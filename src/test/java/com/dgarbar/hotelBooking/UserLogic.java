@@ -4,6 +4,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.everyItem;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.nullValue;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -40,7 +41,8 @@ public class UserLogic {
 	public void getAllUsers() throws Exception {
 		mockMvc.perform(get("/users"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6)));
+			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6)))
+			.andExpect(jsonPath("$.length()").value(6));
 	}
 
 	@Test
@@ -71,6 +73,7 @@ public class UserLogic {
 			.andExpect(jsonPath("$.login").value("Uriel"))
 			.andExpect(
 				jsonPath("$.bookingDtos.[*].room.id").value(hasItems(3, 10)))
+			.andExpect(jsonPath("$.bookingDtos.length()").value(2))
 			.andExpect(jsonPath("$.totalPrice").value(4896.00));
 	}
 
@@ -96,6 +99,10 @@ public class UserLogic {
 			.andExpect(jsonPath("$.login").value("Johnathan"))
 			.andExpect(jsonPath("$.bookingDtos").isEmpty())
 			.andExpect(jsonPath("$.totalPrice").isEmpty());
+
+		mockMvc.perform(
+			delete("/users/7"))
+			.andExpect(status().isOk());
 	}
 
 	@Test
@@ -144,7 +151,7 @@ public class UserLogic {
 	}
 
 	@Test
-	public void addUserWithUniqueId() throws Exception {
+	public void addUserWithUniqueIdBadRequest() throws Exception {
 		mockMvc.perform(
 			post("/users")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -156,15 +163,22 @@ public class UserLogic {
 	public void addUserAndHaveInGetAllUsersList() throws Exception {
 		mockMvc.perform(get("/users"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6)));
+			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6)))
+			.andExpect(jsonPath("$.length()").value(6));
 
 		mockMvc.perform(
 			post("/users")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"login\":\"Johnathan\"}"));
+				.content("{\"login\":\"Johnathan\"}"))
+			.andExpect(jsonPath("$.id").value(8L));
 
 		mockMvc.perform(get("/users"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6, 7)));
+			.andExpect(jsonPath("$.[*].id").value(hasItems(1, 2, 3, 4, 5, 6, 8)))
+			.andExpect(jsonPath("$.length()").value(7));
+
+		mockMvc.perform(
+			delete("/users/8"))
+			.andExpect(status().isOk());
 	}
 }

@@ -4,8 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import com.dgarbar.hotelBooking.model.entity.Room;
+import com.dgarbar.hotelBooking.model.entity.RoomCategory;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 import javax.persistence.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,14 +29,22 @@ public class RoomRepositoryTest {
 	@Test
 	public void getRoomsThatNotInBookedListSize() {
 		LocalDate date = LocalDate.of(2018, 4, 23);
-		List<Room> roomThatNotBooked = roomRepository.getRoomEagerlyThatNotBooked(date);
+		Set<Room> roomThatNotBooked = roomRepository.getRoomEagerlyThatNotBooked(date);
+		roomThatNotBooked.stream().forEach(room -> System.out.println(room.getId()));
 		assertEquals(6,roomThatNotBooked.size());
 	}
 
 	@Test
 	public void getAllRoomsWhenInDateAllRoomsFree() {
 		LocalDate date = LocalDate.of(2018, 4, 23);
-		List<Room> roomThatNotBooked = roomRepository.getRoomEagerlyThatNotBooked(date);
+		Set<Room> roomThatNotBooked = roomRepository.getRoomEagerlyThatNotBooked(date);
 		assertEquals(10,roomThatNotBooked.size());
 	}
+
+	@Test
+	public void getRoomsEagerly() {
+		Set<Room> roomThatNotBooked = roomRepository.getRoomEagerly();
+		assertEquals(10,roomThatNotBooked.size());
+	}
+
 }

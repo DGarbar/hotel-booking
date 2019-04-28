@@ -5,6 +5,7 @@ import com.dgarbar.hotelBooking.model.entity.User;
 import com.dgarbar.hotelBooking.model.mappers.InnerUserMapper;
 import com.dgarbar.hotelBooking.model.mappers.SimpleUserMapper;
 import com.dgarbar.hotelBooking.repo.UserRepository;
+import com.dgarbar.hotelBooking.service.exception.RepositoryOperationException;
 import com.dgarbar.hotelBooking.service.exception.UserNotFoundException;
 import java.util.List;
 import org.springframework.stereotype.Service;
@@ -29,10 +30,19 @@ public class UserService {
 		this.priceCalculator = priceCalculator;
 	}
 
-	public UserDto save(UserDto userDto) {
-		User user = simpleUserMapper.toEntity(userDto);
-		User savedUser = userRepository.save(user);
-		return simpleUserMapper.toDto(savedUser);
+	@Transactional(rollbackFor = Exception.class)
+	public UserDto save(UserDto userDto) throws RepositoryOperationException {
+		try {
+			User user = simpleUserMapper.toEntity(userDto);
+			User savedUser = userRepository.save(user);
+			return simpleUserMapper.toDto(savedUser);
+		} catch (Exception e) {
+			throw new RepositoryOperationException(e);
+		}
+	}
+
+	public void remove(Long id) {
+			userRepository.deleteById(id);
 	}
 
 	@Transactional(readOnly = true)

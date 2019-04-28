@@ -32,4 +32,5 @@ public class BookingRepositoryTest {
 
 		assertEquals(6, overlaps.size());
 	}
+
 }

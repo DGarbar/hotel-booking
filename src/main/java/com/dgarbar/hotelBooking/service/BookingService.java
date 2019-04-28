@@ -1,6 +1,7 @@
 package com.dgarbar.hotelBooking.service;
 
 import com.dgarbar.hotelBooking.model.dto.BookingDto;
+import com.dgarbar.hotelBooking.model.dto.BookingOrder;
 import com.dgarbar.hotelBooking.model.entity.Booking;
 import com.dgarbar.hotelBooking.model.entity.Room;
 import com.dgarbar.hotelBooking.model.entity.User;
@@ -12,6 +13,7 @@ import com.dgarbar.hotelBooking.service.exception.DateIsOverlapException;
 import com.dgarbar.hotelBooking.service.exception.EntityNotFoundException;
 import java.time.LocalDate;
 import java.util.List;
+import javax.persistence.*;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,11 +43,14 @@ public class BookingService {
 	}
 
 	@Transactional(isolation = Isolation.REPEATABLE_READ)
-	public BookingDto saveBooking(Long userId, Long roomId, LocalDate fromDate, LocalDate toDate)
-		throws EntityNotFoundException, DateIsOverlapException {
-		User user = userRepository.getOne(userId);
-		Room room = roomRepository.getOne(roomId);
-		validateDatesValue(fromDate, toDate);
+	public BookingDto saveBooking(BookingOrder bookingOrder)
+		throws DateIsOverlapException, EntityNotFoundException, PersistenceException {
+		System.out.println(bookingOrder.toString());
+		User user = userRepository.getOne(bookingOrder.getUserId());
+		Room room = roomRepository.getRoomByIdEagerly(bookingOrder.getRoomId())
+			.orElseThrow(EntityNotFoundException::new);
+		LocalDate fromDate = bookingOrder.getFromDate();
+		LocalDate toDate = bookingOrder.getToDate();
 		if (isOverlapForDates(fromDate, toDate, room)) {
 			throw new DateIsOverlapException();
 		}
@@ -62,15 +67,6 @@ public class BookingService {
 		return !bookingRepository
 			.getBookingsThatOverlapWithDatesByRoom(fromDate,
 				toDate, room).isEmpty();
-	}
-
-	private void validateDatesValue(LocalDate fromDate, LocalDate toDate)
-		throws EntityNotFoundException {
-		if (!toDate.isEqual(fromDate)) {
-			if (!fromDate.isBefore(toDate)) {
-				throw new EntityNotFoundException();
-			}
-		}
 	}
 
 }
