@@ -22,10 +22,6 @@ public class RoomRepositoryTest {
 	@Autowired
 	private RoomRepository roomRepository;
 
-	@PersistenceContext
-	EntityManager entityManager;
-
-
 	@Test
 	public void getRoomsThatNotInBookedListSize() {
 		LocalDate date = LocalDate.of(2018, 4, 23);
@@ -38,7 +34,8 @@ public class RoomRepositoryTest {
 	public void getAllRoomsWhenInDateAllRoomsFree() {
 		LocalDate date = LocalDate.of(2018, 4, 23);
 		Set<Room> roomThatNotBooked = roomRepository.getRoomEagerlyThatNotBooked(date);
-		assertEquals(10,roomThatNotBooked.size());
+		roomThatNotBooked.forEach(room -> System.out.println(room.getId()));
+		assertEquals(6,roomThatNotBooked.size());
 	}
 
 	@Test

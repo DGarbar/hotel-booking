@@ -1,6 +1,5 @@
 package com.dgarbar.hotelBooking.model.dto;
 
-import com.dgarbar.hotelBooking.model.dto.customValidator.CheckDate;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import javax.validation.constraints.NotNull;

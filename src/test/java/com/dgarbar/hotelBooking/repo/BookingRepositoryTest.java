@@ -24,13 +24,13 @@ public class BookingRepositoryTest {
 
 	@Test
 	public void getOverlapDates() {
-		Room room = roomRepository.getOne(2L);
+		Room room = roomRepository.getOne(4L);
 		List<Booking> overlaps = bookingRepository
-			.getBookingsByFinishDateGreaterThanEqualAndStartDateLessThanEqualAndRoom(
+			.getBookingsThatOverlapWithDatesByRoom(
 				LocalDate.of(2018, 4, 24),
 				LocalDate.of(2018, 4, 27), room);
 
-		assertEquals(6, overlaps.size());
+		assertEquals(1, overlaps.size());
 	}
 
 }

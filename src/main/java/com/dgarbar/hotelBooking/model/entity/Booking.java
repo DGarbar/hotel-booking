@@ -1,8 +1,6 @@
 package com.dgarbar.hotelBooking.model.entity;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

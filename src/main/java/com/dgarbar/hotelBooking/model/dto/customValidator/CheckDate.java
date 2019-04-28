@@ -8,12 +8,13 @@ import javax.validation.Constraint;
 import javax.validation.Payload;
 
 @Constraint(validatedBy = DateValidator.class)
-@Target({ ElementType.TYPE })
+@Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface CheckDate {
+
 	String message() default "Date is not valid";
 
-	Class<?>[] groups() default { };
+	Class<?>[] groups() default {};
 
-	Class<? extends Payload>[] payload() default { };
+	Class<? extends Payload>[] payload() default {};
 }

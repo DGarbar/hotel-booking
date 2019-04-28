@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import javax.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
+
 @CheckDate
 @Data
 public class BookingOrder {
