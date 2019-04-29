@@ -2,12 +2,13 @@ package com.dgarbar.hotelBooking.model.entity;
 
 import java.time.LocalDate;
 import javax.persistence.*;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
-//@EqualsAndHashCode(of = {"login"})
+@EqualsAndHashCode(of = {"user","room","startDate","finishDate"})
 @Setter
 @Getter
 @Entity
