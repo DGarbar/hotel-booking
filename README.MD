@@ -19,3 +19,5 @@ Tech stack: Java 11, Spring Boot, Spring MVC, Spring Data, Hibernate, H2, maven.
 ## Launch
 
 ```java -jar hotel-booking-0.0.1-SNAPSHOT.jar```
+
+Need JDK 11
