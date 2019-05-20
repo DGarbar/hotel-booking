@@ -14,7 +14,7 @@ public class DateValidator implements ConstraintValidator<CheckDate, BookingOrde
 	@Override
 	public boolean isValid(BookingOrder value, ConstraintValidatorContext context) {
 		try {
-			com.dgarbar.hotelBooking.service.DateValidator
+			com.dgarbar.hotelBooking.service.Util.DateValidator
 				.validateDatesValue(value.getFromDate(), value.getToDate());
 			return true;
 		} catch (DateValidationException e) {

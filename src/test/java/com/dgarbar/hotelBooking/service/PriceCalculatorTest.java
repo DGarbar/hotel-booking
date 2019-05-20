@@ -7,16 +7,15 @@ import com.dgarbar.hotelBooking.model.dto.BookingDto;
 import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.dto.RoomServiceDto;
 import com.dgarbar.hotelBooking.model.dto.UserDto;
-import com.dgarbar.hotelBooking.model.entity.User;
+import com.dgarbar.hotelBooking.service.Util.PriceCalculatorImpl;
 import java.math.BigDecimal;
-import java.sql.Date;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.Test;
 
 public class PriceCalculatorTest {
 
-	private PriceCalculator priceCalculator = new PriceCalculator();
+	private PriceCalculator priceCalculator = new PriceCalculatorImpl();
 	private RoomDto roomWithoutServiceDto = RoomDto.builder()
 		.price(new BigDecimal(210.50))
 		.build();

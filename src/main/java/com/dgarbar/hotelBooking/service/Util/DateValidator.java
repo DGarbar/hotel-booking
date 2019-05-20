@@ -1,4 +1,4 @@
-package com.dgarbar.hotelBooking.service;
+package com.dgarbar.hotelBooking.service.Util;
 
 import com.dgarbar.hotelBooking.service.exception.DateValidationException;
 import java.time.LocalDate;

@@ -5,7 +5,7 @@ import com.dgarbar.hotelBooking.model.dto.BookingOrder;
 import com.dgarbar.hotelBooking.model.dto.RoomDto;
 import com.dgarbar.hotelBooking.model.entity.RoomCategory;
 import com.dgarbar.hotelBooking.service.BookingService;
-import com.dgarbar.hotelBooking.service.DateValidator;
+import com.dgarbar.hotelBooking.service.Util.DateValidator;
 import com.dgarbar.hotelBooking.service.RoomService;
 import com.dgarbar.hotelBooking.service.exception.DateIsOverlapException;
 import com.dgarbar.hotelBooking.service.exception.DateValidationException;
