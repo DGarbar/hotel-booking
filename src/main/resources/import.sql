@@ -1,9 +1,9 @@
-INSERT INTO user (id,login) VALUES (1,'Cade');
-INSERT INTO user (id,login) VALUES (2,'Troy');
-INSERT INTO user (id,login) VALUES (3,'Forrest');
-INSERT INTO user (id,login) VALUES (4,'Zeus');
-INSERT INTO user (id,login) VALUES (5,'Uriel');
-INSERT INTO user (id,login) VALUES (6,'Edan');
+INSERT INTO client (id,login) VALUES (1,'Cade');
+INSERT INTO client (id,login) VALUES (2,'Troy');
+INSERT INTO client (id,login) VALUES (3,'Forrest');
+INSERT INTO client (id,login) VALUES (4,'Zeus');
+INSERT INTO client (id,login) VALUES (5,'Uriel');
+INSERT INTO client (id,login) VALUES (6,'Edan');
 
 INSERT INTO service (id,name,price) VALUES (1,'breakfast','98');
 INSERT INTO service (id,name,price) VALUES (2,'smiling','50');

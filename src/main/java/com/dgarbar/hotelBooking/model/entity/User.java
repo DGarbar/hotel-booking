@@ -17,6 +17,7 @@ import org.hibernate.annotations.NaturalId;
 @Getter
 @Entity
 //@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@Table(name = "client")
 public class User {
 
 	@Id
